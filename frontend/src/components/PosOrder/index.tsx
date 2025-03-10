@@ -8,7 +8,7 @@ import OrderStatus from "@/types/OrderStatus";
 interface Props {
   order: Order;
 }
-export default ({ order }: Props) => {
+function PosOrder({ order }: Props) {
   const setStatus = (status: OrderStatus) => {
     patch(order.id, status);
   };
@@ -31,4 +31,6 @@ export default ({ order }: Props) => {
       <NextButton status={order.status} setStatus={setStatus} />
     </div>
   );
-};
+}
+
+export default PosOrder;

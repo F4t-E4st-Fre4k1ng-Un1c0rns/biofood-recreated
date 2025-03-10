@@ -12,7 +12,7 @@ interface Props {
   showImage?: boolean;
 }
 
-export default ({
+function DishInCart({
   dish,
   count,
   add,
@@ -20,7 +20,7 @@ export default ({
   showChangeButton,
   showPrice,
   showImage,
-}: Props) => {
+}: Props) {
   return (
     <div className="flex w-full max-w-full justify-between flex-col sm:flex-row gap-4 pb-4">
       <div className="flex gap-4 items-center">
@@ -28,7 +28,7 @@ export default ({
           <img
             src={
               dish.banner ??
-              // @ts-ignore
+              // @ts-expect-error TODO fix type
               dish.bannerPath ??
               "https://images.unsplash.com/photo-1531234799389-dcb7651eb0a2?q=80&w=200&auto=format"
             }
@@ -51,4 +51,5 @@ export default ({
       </div>
     </div>
   );
-};
+}
+export default DishInCart;

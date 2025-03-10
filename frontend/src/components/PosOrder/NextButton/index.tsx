@@ -24,7 +24,7 @@ const NEXT_STATUS = {
   [OrderStatus.taken]: OrderStatus.taken,
 };
 
-export default ({ status, setStatus }: Props) => {
+function NextButton({ status, setStatus }: Props) {
   return (
     <div className="w-full flex justify-between mb-3">
       {status == OrderStatus.pending ? (
@@ -43,4 +43,6 @@ export default ({ status, setStatus }: Props) => {
       </Button>
     </div>
   );
-};
+}
+
+export default NextButton;

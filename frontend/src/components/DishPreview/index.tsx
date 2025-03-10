@@ -8,7 +8,7 @@ interface Props {
   remove: () => void;
 }
 
-export default ({ dish, count, add, remove }: Props) => {
+function DishPreview({ dish, count, add, remove }: Props) {
   return (
     <div className="w-full gap-2 rounded-xl ring-accent ring-0 hover:ring-2">
       <div
@@ -39,4 +39,6 @@ export default ({ dish, count, add, remove }: Props) => {
       </div>
     </div>
   );
-};
+}
+
+export default DishPreview;

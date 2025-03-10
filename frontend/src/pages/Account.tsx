@@ -8,10 +8,10 @@ import { useAuthStore } from "@/store/auth";
 import LoadingState from "@/types/LoadingState";
 import Order from "@/types/Order";
 import { uuidToOrderNumber } from "@/utils/uuidToOrderNumber";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-export default () => {
+function Account() {
   const navigate = useNavigate();
   const auth = useAuthStore();
 
@@ -89,4 +89,6 @@ export default () => {
         })}
     </div>
   );
-};
+}
+
+export default Account;

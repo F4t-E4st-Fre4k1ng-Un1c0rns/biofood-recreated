@@ -1,5 +1,5 @@
 import { load } from "@/api/authenticate";
-import User, { Roles } from "@/types/User";
+import User from "@/types/User";
 import { create } from "zustand";
 
 export interface AuthStore {

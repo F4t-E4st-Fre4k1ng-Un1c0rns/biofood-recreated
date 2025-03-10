@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import { useCacheStore } from "@/store/cache";
 import { Outlet } from "react-router";
 
-export default () => {
+function Layout() {
   const catalogue = useCacheStore();
   return (
     <>
@@ -12,4 +12,6 @@ export default () => {
       </div>
     </>
   );
-};
+}
+
+export default Layout;

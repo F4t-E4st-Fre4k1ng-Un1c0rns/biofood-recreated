@@ -2,11 +2,11 @@ import { useAuthStore } from "@/store/auth";
 import { useNavigate } from "react-router";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 
-export default () => {
+function ChefLogin() {
   const auth = useAuthStore();
   const navigate = useNavigate();
 
-  const onTokenInput = (e: any) => {
+  const onTokenInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const token = e.target.value;
     auth.loginByToken(token);
     navigate("/pos/chef");
@@ -53,4 +53,6 @@ export default () => {
       </div>
     </div>
   );
-};
+}
+
+export default ChefLogin;

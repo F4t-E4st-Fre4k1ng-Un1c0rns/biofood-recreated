@@ -10,7 +10,7 @@ interface Props {
   categories: Category[];
 }
 
-export default ({ categories }: Props) => {
+function Header({ categories }: Props) {
   const auth = useAuthStore();
   return (
     <header className="w-full flex justify-between gap-6 p-8 sticky top-0 bg-white items-center">
@@ -36,4 +36,6 @@ export default ({ categories }: Props) => {
       )}
     </header>
   );
-};
+}
+
+export default Header;

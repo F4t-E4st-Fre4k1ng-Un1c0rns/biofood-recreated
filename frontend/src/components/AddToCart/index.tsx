@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-export default ({ count, add, remove, className }: Props) => {
+export function AddToCart({ count, add, remove, className }: Props) {
   if (!count) {
     return (
       <Button onClick={add} color="primary" className={className}>
@@ -27,4 +27,4 @@ export default ({ count, add, remove, className }: Props) => {
       </Button>
     </div>
   );
-};
+}

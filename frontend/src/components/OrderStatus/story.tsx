@@ -1,4 +1,4 @@
-import type { Meta, StoryObj, Preview } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import OrderStatusComponent from "./index";
 import OrderStatus from "@/types/OrderStatus";

@@ -1,4 +1,4 @@
-export default () => {
+function LoadingIcon() {
   return (
     <div role="status" className="w-full flex justify-center">
       <svg
@@ -19,4 +19,6 @@ export default () => {
       </svg>
     </div>
   );
-};
+}
+
+export default LoadingIcon;

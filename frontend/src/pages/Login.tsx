@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { useCartStore } from "@/store/cart";
 
-export default () => {
+function Login() {
   const cart = useCartStore();
   const redirectUri = `${window.location.protocol}//${window.location.host}/login-done`;
   const urlParams = new URLSearchParams({
@@ -22,4 +22,6 @@ export default () => {
       </Button>
     </>
   );
-};
+}
+
+export default Login;

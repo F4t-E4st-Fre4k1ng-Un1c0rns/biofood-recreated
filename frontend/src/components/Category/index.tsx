@@ -9,7 +9,7 @@ interface Props {
   id: string;
 }
 
-export default ({ category, id }: Props) => {
+function Category({ category, id }: Props) {
   const catalogue = useCacheStore();
   const cart = useCartStore();
   return (
@@ -40,4 +40,6 @@ export default ({ category, id }: Props) => {
       </div>
     </>
   );
-};
+}
+
+export default Category;

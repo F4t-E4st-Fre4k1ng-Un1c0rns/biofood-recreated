@@ -13,7 +13,7 @@ const textDict = {
 interface Props {
   code: keyof typeof emojiDict;
 }
-export default ({ code }: Props) => {
+function Error({ code }: Props) {
   return (
     <div>
       <p
@@ -27,4 +27,6 @@ export default ({ code }: Props) => {
       <p className="w-full text-center">{textDict[code]}</p>
     </div>
   );
-};
+}
+
+export default Error;

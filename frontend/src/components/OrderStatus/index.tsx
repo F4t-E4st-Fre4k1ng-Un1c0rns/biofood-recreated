@@ -5,10 +5,12 @@ interface Props {
   status: Order["status"];
 }
 
-export default ({ status }: Props) => {
+function OrderStatus({ status }: Props) {
   return (
     <span className={`${colorClasses[status]} w-fit py-1 px-2 rounded-2xl`}>
       {names[status]}
     </span>
   );
-};
+}
+
+export default OrderStatus;

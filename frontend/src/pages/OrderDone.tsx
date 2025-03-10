@@ -1,4 +1,3 @@
-import { put } from "@/api/orders";
 import DishInCart from "@/components/DishInCart";
 import Error from "@/components/Error";
 import LoadingIcon from "@/components/LoadingIcon";
@@ -15,7 +14,7 @@ const REFRESH_TIMEOUT = parseInt(
   import.meta.env.VITE_ORDER_REFRESH_TIMEOUT ?? "1000"
 );
 
-export default () => {
+function OrderDone() {
   const cache = useCacheStore();
   const [state, setState] = useState(LoadingState.loading);
   const [params] = useSearchParams();
@@ -73,6 +72,7 @@ export default () => {
                 showChangeButton={false}
                 showPrice={true}
                 showImage={true}
+                key={item.dish.id}
               />
             );
           })}
@@ -81,4 +81,6 @@ export default () => {
       {state == LoadingState.error && <Error code={500} />}
     </div>
   );
-};
+}
+
+export default OrderDone;

@@ -9,7 +9,7 @@ import LoadingState from "@/types/LoadingState";
 import LoadingIcon from "@/components/LoadingIcon";
 import { put } from "@/api/orders";
 
-export default () => {
+function Cart() {
   const navigate = useNavigate();
   const cache = useCacheStore();
   const cart = useCartStore();
@@ -33,7 +33,7 @@ export default () => {
 
   const sum = useMemo(() => {
     let sum = 0;
-    for (let item of Object.entries(cart.cart)) {
+    for (const item of Object.entries(cart.cart)) {
       if (item[0] in cache.dishes) {
         sum += cache.dishes[item[0]].price * item[1];
       }
@@ -119,4 +119,6 @@ export default () => {
       </div>
     </>
   );
-};
+}
+
+export default Cart;

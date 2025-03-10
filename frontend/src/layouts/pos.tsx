@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-export default () => {
+function PosLayout() {
   document
     .querySelector("meta[name=viewport]")
     ?.setAttribute(
@@ -14,4 +14,6 @@ export default () => {
       </div>
     </>
   );
-};
+}
+
+export default PosLayout;

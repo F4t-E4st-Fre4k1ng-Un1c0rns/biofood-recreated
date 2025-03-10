@@ -1,7 +1,7 @@
 import Category from "@/components/Category";
 import { useCacheStore } from "@/store/cache";
 
-export default () => {
+function Catalogue() {
   const catalogue = useCacheStore();
   return (
     <>
@@ -10,4 +10,6 @@ export default () => {
       ))}
     </>
   );
-};
+}
+
+export default Catalogue;

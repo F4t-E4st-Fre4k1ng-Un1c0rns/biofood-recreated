@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import { useAuthStore } from "@/store/auth";
 import QRCode from "react-qr-code";
 
-export default () => {
+function StaffQrCode() {
   const auth = useAuthStore();
 
   const copy = () => {
@@ -19,4 +19,6 @@ export default () => {
       </Button>
     </div>
   );
-};
+}
+
+export default StaffQrCode;

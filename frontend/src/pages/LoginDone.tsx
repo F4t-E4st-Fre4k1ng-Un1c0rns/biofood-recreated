@@ -4,7 +4,7 @@ import { useCartStore } from "@/store/cart";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-export default () => {
+function LoginDone() {
   const navigate = useNavigate();
   const cart = useCartStore();
 
@@ -16,7 +16,7 @@ export default () => {
       console.error("No code");
       return;
     }
-    auth.auth(params.get("access_token")!).then((user) => {
+    auth.auth(params.get("access_token")!).then(() => {
       cart.restoreCart();
       navigate("/cart", {
         replace: true,
@@ -30,4 +30,6 @@ export default () => {
       <LoadingIcon />
     </>
   );
-};
+}
+
+export default LoginDone;

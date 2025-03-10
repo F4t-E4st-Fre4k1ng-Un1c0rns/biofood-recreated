@@ -3,7 +3,6 @@ import Button from "@/components/Button";
 import LoadingIcon from "@/components/LoadingIcon";
 import PosOrder from "@/components/PosOrder";
 import { useAuthStore } from "@/store/auth";
-import { useCacheStore } from "@/store/cache";
 import LoadingState from "@/types/LoadingState";
 import Order from "@/types/Order";
 import OrderStatus from "@/types/OrderStatus";
@@ -14,7 +13,7 @@ const REFRESH_TIMEOUT = parseInt(
   import.meta.env.VITE_ORDER_REFRESH_TIMEOUT ?? "1000"
 );
 
-export default () => {
+function ChefKanban() {
   const auth = useAuthStore();
   const navigate = useNavigate();
   const [state, setState] = useState(LoadingState.loading);
@@ -95,4 +94,5 @@ export default () => {
       </div>
     </>
   );
-};
+}
+export default ChefKanban;

@@ -12,7 +12,7 @@ const colors = {
   secondary: "bg-secondary text-black",
   accent: "bg-accent text-white",
 };
-export default ({ children, onClick, color, className }: Props) => {
+function Button({ children, onClick, color, className }: Props) {
   return (
     <button
       onClick={onClick}
@@ -25,4 +25,6 @@ export default ({ children, onClick, color, className }: Props) => {
       </div>
     </button>
   );
-};
+}
+
+export default Button;
