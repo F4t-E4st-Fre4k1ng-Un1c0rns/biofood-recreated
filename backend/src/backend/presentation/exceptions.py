@@ -25,14 +25,18 @@ async def integrity_compromised_handler(
     )
 
 
-async def authentication_error_handler(_: Request, exc: AuthenticationError) -> JSONResponse:
+async def authentication_error_handler(
+    _: Request, exc: AuthenticationError
+) -> JSONResponse:
     return JSONResponse(
         status_code=401,
         content={"detail": str(type(exc).__name__), "body": str(exc)},
     )
 
 
-async def authorization_error_handler(_: Request, exc: AuthorizationError) -> JSONResponse:
+async def authorization_error_handler(
+    _: Request, exc: AuthorizationError
+) -> JSONResponse:
     return JSONResponse(
         status_code=403,
         content={"detail": str(type(exc).__name__), "body": str(exc)},

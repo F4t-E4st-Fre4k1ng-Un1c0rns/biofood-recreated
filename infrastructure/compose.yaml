@@ -10,12 +10,14 @@ services:
       - ./dumps/${POSTGRES_DB_CUSTOMER}.sql:/docker-entrypoint-initdb.d/${POSTGRES_DB_CUSTOMER}.sql:ro
       - ./dumps/${POSTGRES_DB_MODEL}.sql:/docker-entrypoint-initdb.d/${POSTGRES_DB_MODEL}.sql:ro
       - database_storage:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_MULTIPLE_DATABASES: ${POSTGRES_DB_CUSTOMER}, ${POSTGRES_DB_MODEL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  redis:
+    container_name: biofood-redis
+    image: redis:alpine
 
   backend:
     container_name: biofood-backend
@@ -30,7 +32,7 @@ services:
           path: ../backend/src
           target: /backend/src
     environment:
-      POSTGRES_DSN: ${POSTGRES_DSN_BASE_BACKEND}/${POSTGRES_DB_CUSTOMER}
+      POSTGRES_DSN: ${POSTGRES_ASYNC_DSN_BASE}/${POSTGRES_DB_CUSTOMER}
       MINIO_USER_URL: ${MINIO_USER_URL}
       MINIO_BUCKET_NAME: ${MINIO_BUCKET_NAME}
       JWT_SECRET: ${JWT_SECRET}
@@ -147,10 +149,9 @@ services:
       APP_ENV: "prod"
       MASTER_TOKEN: "fake-us-master-token"
       POSTGRES_DSN_LIST: postgres://us:us@datalens-pg-us:5432/us_metadata
-      SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
+      SKIP_INSTALL_DB_EXTENSIONS: ${DATALENS_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: 0
-      HC: ${HC:-0}
-      # NODE_EXTRA_CA_CERTS: /certs/root.crt
+      HC: ${DATALENS_HEALTHCHECK:-0}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -173,7 +174,7 @@ services:
       BI_DATA_ENDPOINT: "http://datalens-data-api:8080"
       US_MASTER_TOKEN: "fake-us-master-token"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
-      HC: ${HC:-0}
+      HC: ${DATALENS_HEALTHCHECK:-0}
 
 volumes:
   database_storage:

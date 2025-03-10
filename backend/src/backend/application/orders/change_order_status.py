@@ -1,5 +1,6 @@
 from pydantic import RootModel
 
+from backend.application.common.orders_channel import OrdersChannel
 from backend.domain.value_objects import OrderStatus, UserRole
 from src.backend.application.common.authorization import AccessTokenI
 from src.backend.application.common.interactor import Interactor
@@ -19,9 +20,10 @@ class ChangeOrderStatusResultDTO(RootModel):
 
 
 class ChangeOrderStatus(Interactor[ChangeOrderStatusDTO, ChangeOrderStatusResultDTO]):
-    def __init__(self, uow: UoW, token: AccessTokenI):
+    def __init__(self, uow: UoW, orders_channel: OrdersChannel, token: AccessTokenI):
         self.uow = uow
         self.token = token
+        self.orders_channel = orders_channel
 
     async def __call__(self, data: ChangeOrderStatusDTO) -> ChangeOrderStatusResultDTO:
         if self.token.user_role == UserRole.client:
@@ -31,5 +33,7 @@ class ChangeOrderStatus(Interactor[ChangeOrderStatusDTO, ChangeOrderStatusResult
             order = await self.uow.order.update_one(
                 data.id, {"status": data.new_status}
             )
+            await self.orders_channel.publish_update(order)
             await self.uow.commit()
+
         return ChangeOrderStatusResultDTO(order)

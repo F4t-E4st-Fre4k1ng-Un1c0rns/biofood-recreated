@@ -7,9 +7,11 @@ from src.backend.application.common.authorization import AccessTokenI
 from src.backend.application.get_categories_list import GetCategoriesList
 from src.backend.application.get_dishes_list import GetDishshesList
 from src.backend.application.orders.create_order import CreateOrder
-from src.backend.application.orders.get_all_orders_for_today import GetAllOrdersForToday
 from src.backend.application.orders.get_orders_by_id import GetOrderByID
-from src.backend.application.orders.get_orders_list import GetOrdersList
+from src.backend.application.orders.subscribe_to_all_orders import SubscribeToAllOrders
+from src.backend.application.orders.subscribe_to_orders_list import (
+    SubscribeToOrdersList,
+)
 from src.backend.application.shopping_cart.add_to_shopping_cart_items import (
     AddToShoppingCartItemsList,
 )
@@ -53,7 +55,9 @@ class InteractorFactory(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_orders_list(self, token: AccessTokenI) -> ContextManager[GetOrdersList]:
+    def subscribe_to_orders_list(
+        self, token: AccessTokenI
+    ) -> ContextManager[SubscribeToOrdersList]:
         raise NotImplementedError
 
     @abstractmethod
@@ -61,9 +65,9 @@ class InteractorFactory(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all_orders_for_today(
+    def subscribe_to_all_orders(
         self, token: AccessTokenI
-    ) -> ContextManager[GetAllOrdersForToday]:
+    ) -> ContextManager[SubscribeToAllOrders]:
         raise NotImplementedError
 
     @abstractmethod

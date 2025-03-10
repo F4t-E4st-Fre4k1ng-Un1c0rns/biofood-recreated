@@ -2,22 +2,21 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 from backend.application.orders.change_order_status import (
     ChangeOrderStatusDTO,
     ChangeOrderStatusResultDTO,
 )
-from backend.application.orders.get_all_orders_for_today import (
-    GetAllOrderForTodayDTO,
-    GetAllOrderForTodayResultDTO,
-)
 from backend.application.orders.get_orders_by_id import (
     GetOrderByIdDTO,
     GetOrderByIdResultDTO,
 )
+from backend.application.orders.subscribe_to_all_orders import (
+    SubscribeToAllOrdersResultDTO,
+)
 from backend.domain.aggregates import OrderID
 from backend.domain.value_objects import OrderStatus
-from pydantic import BaseModel
 from src.backend.application.orders.create_order import (
     CreateOrderDTO,
     CreateOrderResultDTO,
@@ -37,34 +36,36 @@ orders_router = APIRouter(prefix="")
     "/orders",
     tags=["Store"],
     response_model=GetOrdersListResultDTO,
-    summary="Get list of users orders",
+    summary="Subscribe to users orders changes",
 )
 async def get_orders_list(
     ioc: Annotated[IoC, Depends()],
     access_token: Annotated[AccessToken, Depends(provide_access_token)],
 ):
-    with ioc.get_orders_list(access_token) as get_orders_list_interactor:
-        return await get_orders_list_interactor()
+    with ioc.subscribe_to_orders_list(access_token) as subscribe_to_orders_generator:
+        async def string_generator():
+            async for item in subscribe_to_orders_generator():
+                yield item.model_dump_json()
+        return StreamingResponse(string_generator(), media_type="text/event-stream")
 
 
-# TODO: make it SSE
-@orders_router.get(
-    "/orders/today",
+@orders_router.post(
+    "/orders/subscribe-all",
     tags=["Staff"],
-    response_model=GetAllOrderForTodayResultDTO,
-    summary="Get todays orders",
+    response_model=SubscribeToAllOrdersResultDTO,
+    summary="Subsribe to all orders changes",
 )
-async def get_orders_for_today(
+async def get(
     ioc: Annotated[IoC, Depends()],
     access_token: Annotated[AccessToken, Depends(provide_admin_access_token)],
-    status: OrderStatus,
 ):
-    with ioc.get_all_orders_for_today(
-        access_token
-    ) as get_all_orders_for_today_interactor:
-        return await get_all_orders_for_today_interactor(
-            GetAllOrderForTodayDTO(status=status)
-        )
+    with ioc.subscribe_to_all_orders(access_token) as subscribe_to_orders_generator:
+
+        async def string_generator():
+            async for item in subscribe_to_orders_generator():
+                yield item.model_dump_json()
+
+        return StreamingResponse(string_generator(), media_type="text/event-stream")
 
 
 @orders_router.get(

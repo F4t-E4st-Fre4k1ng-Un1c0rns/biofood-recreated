@@ -17,6 +17,12 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
+  redis:
+    container_name: biofood-redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    
   backend:
     build:
       context: ../backend
@@ -29,7 +35,8 @@ services:
           path: ../backend/src
           target: /backend/src
     environment:
-      POSTGRES_DSN: ${POSTGRES_DSN_BASE_BACKEND}/${POSTGRES_DB_CUSTOMER}
+      POSTGRES_DSN: ${POSTGRES_ASYNC_DSN_BASE}/${POSTGRES_DB_CUSTOMER}
+      REDIS_DSN: ${REDIS_DSN}
       MINIO_USER_URL: ${MINIO_USER_URL}
       MINIO_BUCKET_NAME: ${MINIO_BUCKET_NAME}
       JWT_SECRET: ${JWT_SECRET}

@@ -1,13 +1,13 @@
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Optional, Self
+from typing import Self
 
 import jwt
 from jwt.exceptions import DecodeError, ExpiredSignatureError
 
 from src.backend.application.common.authorization import AccessTokenI
 from src.backend.domain.exceptions import AuthorizationError
-from src.backend.domain.models import User, UserID, UserRole
+from src.backend.domain.models import UserID, UserRole
 from src.backend.settings import settings
 
 

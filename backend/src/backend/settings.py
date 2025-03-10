@@ -1,4 +1,4 @@
-from pydantic import AnyHttpUrl, PostgresDsn
+from pydantic import AnyHttpUrl, PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,13 +7,13 @@ class Settings(BaseSettings):
 
     POSTGRES_DSN: PostgresDsn
 
+    REDIS_DSN: RedisDsn
+
     MINIO_USER_URL: AnyHttpUrl
     MINIO_BUCKET_NAME: str
 
     JWT_SECRET: str
     JWT_ALGORITHMS: list[str] = ["HS256"]
-
-    # TODO: SSE_TIME_GAP: int # time in seconds
 
     CORS_ALLOW_ORIGINS: list[str] = ["*"]
     CORS_ALLOW_METHODS: list[str] = ["*"]

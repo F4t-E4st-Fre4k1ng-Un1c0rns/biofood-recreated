@@ -37,8 +37,7 @@ class Dish(Base):
     @field_validator("banner_path")
     @classmethod
     def make_url(cls, banner_path: str) -> str:
-        return settings.MINIO_BUCKET_URL+banner_path
-
+        return settings.MINIO_BUCKET_URL + banner_path
 
 
 class ShoppingCartItem(Base):

@@ -1,9 +1,11 @@
 from datetime import datetime
 from typing import Optional
 
-from backend.domain.exceptions import IntegrityCompromised
 from pydantic import AwareDatetime, RootModel
 
+from backend.adapters import orders_channel
+from backend.application.common.orders_channel import OrdersChannel
+from backend.domain.exceptions import IntegrityCompromised
 from src.backend.application.common.authorization import AccessTokenI
 from src.backend.application.common.interactor import Interactor
 from src.backend.application.common.uow import UoW
@@ -22,8 +24,9 @@ class CreateOrderResultDTO(RootModel):
 
 
 class CreateOrder(Interactor[CreateOrderDTO, CreateOrderResultDTO]):
-    def __init__(self, uow: UoW, token: AccessTokenI):
+    def __init__(self, uow: UoW, orders_channel: OrdersChannel, token: AccessTokenI):
         self.uow = uow
+        self.orders_channel = orders_channel
         self.token = token
 
     async def __call__(self, data: CreateOrderDTO) -> CreateOrderResultDTO:
@@ -32,9 +35,10 @@ class CreateOrder(Interactor[CreateOrderDTO, CreateOrderResultDTO]):
             order = await self.__create_order(data.takeout_time)
             await self.__add_items_from_shopping_cart_to_order(order.id)
             await self.__clear_shopping_cart()
+            order = await self.uow.order.find_one(by_filter={"id": order.id})
+            await self.orders_channel.publish_update(order)
             await self.uow.commit()
 
-            order = await self.uow.order.find_one(by_filter={"id": order.id})
             return CreateOrderResultDTO(root=order)
 
     async def __get_users_shopping_cart_items(self) -> list[ShoppingCartItem]:
@@ -58,7 +62,9 @@ class CreateOrder(Interactor[CreateOrderDTO, CreateOrderResultDTO]):
             by_filter={"user_id": self.token.user_id}
         )
         if len(items) == 0:
-            raise IntegrityCompromised("You can not create order with empty shopping cart")
+            raise IntegrityCompromised(
+                "You can not create order with empty shopping cart"
+            )
 
         for item in items:
             data = {
